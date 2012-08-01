@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas Spritesheet Animation</title>
+    <link rel="stylesheet" href="assets/stylesheet.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="assets/FrameTimer.js"></script>
+    <script type="text/javascript" src="assets/SpriteSheet.js"></script>
+    <script type="text/javascript" src="assets/Animation.js"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        var timer = new FrameTimer();
+        timer.tick();
+ 
+        var sprites = new SpriteSheet({
+          width: 32,
+          height: 32,
+          sprites: [
+            { name: 'stand' },
+            { name: 'walk_1', x: 0, y: 1 },
+            { name: 'walk_2', x: 0, y: 1 },
+            { name: 'run', x: 0, y: 1 },
+            { name: 'jump', x: 0, y: 1 },
+            { name: 'punch_1', x: 0, y: 1 },
+            { name: 'punch_2', x: 0, y: 1 },
+            { name: 'punch_3', x: 0, y: 1 },
+            { name: 'hit_1', x: -256, y: 32 },
+            { name: 'hit_2', x: -256, y: 32 },
+            { name: 'die', x: -256, y: 32 }
+          ]
+        });
+        
+        var walk = new Animation([
+          { sprite: 'walk_1', time: 0.2 },
+          { sprite: 'stand', time: 0.2 },
+          { sprite: 'walk_2', time: 0.2 },
+          { sprite: 'stand', time: 0.2 }
+        ], sprites);
+        
+        var doItAll = new Animation([
+           { sprite: 'stand', time: 0.2 },
+           { sprite: 'walk_1', time: 0.2 },
+           { sprite: 'walk_2', time: 0.2 },
+           { sprite: 'run', time: 0.2 },
+           { sprite: 'jump', time: 0.2 },
+           { sprite: 'punch_1', time: 0.2 },
+           { sprite: 'punch_2', time: 0.2 },
+           { sprite: 'punch_3', time: 0.2 },
+           { sprite: 'hit_1', time: 0.2 },
+           { sprite: 'hit_2', time: 0.2 },
+           { sprite: 'die', time: 1.0 }
+         ], sprites);
+         
+        var getHit = new Animation([
+           { sprite: 'hit_1', time: 0.2 },
+           { sprite: 'hit_2', time: 0.2 },
+           { sprite: 'die', time: 0.2 }
+         ], sprites);
+        
+        var punch = new Animation([
+          { sprite: 'punch_1', time: 0.2 },
+          { sprite: 'punch_2', time: 0.2 },
+          { sprite: 'punch_3', time: 0.2 }
+        ], sprites);
+        
+        var ctx = document.getElementById('canvas').getContext('2d');
+        var fighterImage = new Image();
+ 
+        fighterImage.onload = function() {
+          setInterval(function(){
+            doItAll.animate(timer.getSeconds());
+            var frame = doItAll.getSprite();
+            ctx.clearRect(0, 0, 300, 300);
+            ctx.drawImage(fighterImage, frame.x, frame.y, 32, 32, 0, 0, 32, 32);
+            timer.tick();
+          }, 5);
+        };
+ 
+        fighterImage.src = 'assets/fighter.gif';
+      };
+    
+      function doKeyDown(evt){
+        switch (evt.keyCode) {
+          case 38:  /* Up arrow was pressed */
+            if (y - dy > 0){
+              y -= dy;
+            }
+            break;
+          case 40:  /* Down arrow was pressed */
+            if (y + dy < HEIGHT){
+              y += dy;
+            }
+            break;
+          case 37:  /* Left arrow was pressed */
+            if (x - dx > 0){
+              x -= dx;
+            }
+            break;
+          case 39:  /* Right arrow was pressed */
+            if (x + dx < WIDTH){
+              x += dx;
+            }
+            break;
+        }
+      }
+      
+      window.addEventListener('keydown',doKeyDown,true);
+    </script>
+  </head>
+  <body style="">
+    <h1><marquee behavior='alternate'><blink>Super Fight Game!</blink></marquee></h1>
+    <canvas id="canvas" width="300" height="300"></canvas>
+    <audio controls="controls" autoplay="autoplay" loop="loop" style="margin: auto;display:block;">
+      <source src="assets/8_bit_Boss_Battle_3.mp3" type="audio/mp3" />
+      Your browser does not support the audio tag.
+    </audio>
+  </body>
+</html>

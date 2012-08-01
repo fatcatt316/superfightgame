@@ -1,0 +1,40 @@
+body {
+  background-color: black; 
+	background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+							color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, rgba(1,1,1,0)),
+							color-stop(.5, rgba(1,1,1,0)), color-stop(.5, rgba(255, 255, 255, .2)),
+							color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, rgba(1,1,1,0)),
+	 						to(rgba(1,1,1,0)));
+	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, rgba(1,1,1,0) 25%,
+						rgba(1,1,1,0) 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+						rgba(1,1,1,0) 75%, rgba(1,1,1,0));
+	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, rgba(1,1,1,0) 25%,
+						rgba(1,1,1,0) 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+						rgba(1,1,1,0) 75%, rgba(1,1,1,0));
+	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, rgba(1,1,1,0) 25%,
+						rgba(1,1,1,0) 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+						rgba(1,1,1,0) 75%, rgba(1,1,1,0));
+	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, rgba(1,1,1,0) 25%,
+						rgba(1,1,1,0) 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+						rgba(1,1,1,0) 75%, rgba(1,1,1,0));
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, rgba(1,1,1,0) 25%,
+						rgba(1,1,1,0) 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+						rgba(1,1,1,0) 75%, rgba(1,1,1,0));
+  -webkit-background-size: 50px 50px;
+  -moz-background-size: 50px 50px;
+  background-size: 50px 50px;
+}
+
+canvas {
+  border: 3px solid grey;
+  margin: auto;
+  display:block;
+  background-color: white;
+}
+
+h1 {
+  color: red;
+  text-align: center;
+  margin: auto;
+  width: 400px;
+}
