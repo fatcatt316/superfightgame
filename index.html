@@ -7,76 +7,104 @@
     <script type="text/javascript" src="assets/SpriteSheet.js"></script>
     <script type="text/javascript" src="assets/Animation.js"></script>
     <script type="text/javascript">
-      window.onload = function() {
-        var timer = new FrameTimer();
-        timer.tick();
+      var canvas;
+      var ctx;
+      
+      // Distance for each keystroke
+      var dx = 5;
+      var dy = 5;
+      
+      // Initial coordinates of fighter
+      var x = 50;
+      var y = 50;
+      
+      // Width and height of the canvas
+      var WIDTH = 600;
+      var HEIGHT = 400;
+      
+      // For displaying different frames of the fighterImage spritesheet
+      var fighterImage;
+      var frame;
+      var timer = new FrameTimer();
  
-        var sprites = new SpriteSheet({
-          width: 32,
-          height: 32,
-          sprites: [
-            { name: 'stand' },
-            { name: 'walk_1', x: 0, y: 1 },
-            { name: 'walk_2', x: 0, y: 1 },
-            { name: 'run', x: 0, y: 1 },
-            { name: 'jump', x: 0, y: 1 },
-            { name: 'punch_1', x: 0, y: 1 },
-            { name: 'punch_2', x: 0, y: 1 },
-            { name: 'punch_3', x: 0, y: 1 },
-            { name: 'hit_1', x: -256, y: 32 },
-            { name: 'hit_2', x: -256, y: 32 },
-            { name: 'die', x: -256, y: 32 }
-          ]
-        });
+      var sprites = new SpriteSheet({
+        width: 32,
+        height: 32,
+        sprites: [
+          { name: 'stand' },
+          { name: 'walk_1', x: 0, y: 1 },
+          { name: 'walk_2', x: 0, y: 1 },
+          { name: 'run', x: 0, y: 1 },
+          { name: 'jump', x: 0, y: 1 },
+          { name: 'punch_1', x: 0, y: 1 },
+          { name: 'punch_2', x: 0, y: 1 },
+          { name: 'punch_3', x: 0, y: 1 },
+          { name: 'hit_1', x: -256, y: 32 },
+          { name: 'hit_2', x: -256, y: 32 },
+          { name: 'die', x: -256, y: 32 }
+        ]
+      });
+      
+      // Animations
+      var walk = new Animation([
+        { sprite: 'walk_1', time: 0.2 },
+        { sprite: 'stand', time: 0.2 },
+        { sprite: 'walk_2', time: 0.2 },
+        { sprite: 'stand', time: 0.2 }
+      ], sprites);
         
-        var walk = new Animation([
-          { sprite: 'walk_1', time: 0.2 },
-          { sprite: 'stand', time: 0.2 },
-          { sprite: 'walk_2', time: 0.2 },
-          { sprite: 'stand', time: 0.2 }
-        ], sprites);
-        
-        var doItAll = new Animation([
-           { sprite: 'stand', time: 0.2 },
-           { sprite: 'walk_1', time: 0.2 },
-           { sprite: 'walk_2', time: 0.2 },
-           { sprite: 'run', time: 0.2 },
-           { sprite: 'jump', time: 0.2 },
-           { sprite: 'punch_1', time: 0.2 },
-           { sprite: 'punch_2', time: 0.2 },
-           { sprite: 'punch_3', time: 0.2 },
-           { sprite: 'hit_1', time: 0.2 },
-           { sprite: 'hit_2', time: 0.2 },
-           { sprite: 'die', time: 1.0 }
-         ], sprites);
+      var doItAll = new Animation([
+         { sprite: 'stand', time: 0.2 },
+         { sprite: 'walk_1', time: 0.2 },
+         { sprite: 'walk_2', time: 0.2 },
+         { sprite: 'run', time: 0.2 },
+         { sprite: 'jump', time: 0.2 },
+         { sprite: 'punch_1', time: 0.2 },
+         { sprite: 'punch_2', time: 0.2 },
+         { sprite: 'punch_3', time: 0.2 },
+         { sprite: 'hit_1', time: 0.2 },
+         { sprite: 'hit_2', time: 0.2 },
+         { sprite: 'die', time: 1.0 }
+       ], sprites);
          
-        var getHit = new Animation([
-           { sprite: 'hit_1', time: 0.2 },
-           { sprite: 'hit_2', time: 0.2 },
-           { sprite: 'die', time: 0.2 }
-         ], sprites);
+      var getHit = new Animation([
+         { sprite: 'hit_1', time: 0.2 },
+         { sprite: 'hit_2', time: 0.2 },
+         { sprite: 'die', time: 0.2 }
+       ], sprites);
         
-        var punch = new Animation([
-          { sprite: 'punch_1', time: 0.2 },
-          { sprite: 'punch_2', time: 0.2 },
-          { sprite: 'punch_3', time: 0.2 }
-        ], sprites);
-        
-        var ctx = document.getElementById('canvas').getContext('2d');
-        var fighterImage = new Image();
- 
+      var punch = new Animation([
+        { sprite: 'punch_1', time: 0.2 },
+        { sprite: 'punch_2', time: 0.2 },
+        { sprite: 'punch_3', time: 0.2 }
+      ], sprites);
+      
+      function draw() {
+        clear();
+        ctx.drawImage(fighterImage, frame.x, frame.y, 32, 32, x, y, 64, 64);
+      }
+      
+      function clear() {
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      }
+      
+      function init() {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+        fighterImage = new Image();
+        fighterImage.src = 'assets/fighter.gif';
         fighterImage.onload = function() {
           setInterval(function(){
             doItAll.animate(timer.getSeconds());
-            var frame = doItAll.getSprite();
-            ctx.clearRect(0, 0, 300, 300);
-            ctx.drawImage(fighterImage, frame.x, frame.y, 32, 32, 0, 0, 32, 32);
+            frame = doItAll.getSprite();
+            // ctx.clearRect(0, 0, 300, 300);
+            // ctx.drawImage(fighterImage, frame.x, frame.y, 32, 32, 0, 0, 32, 32);
             timer.tick();
           }, 5);
         };
- 
-        fighterImage.src = 'assets/fighter.gif';
-      };
+        
+        return setInterval(draw, 10);
+      }
     
       function doKeyDown(evt){
         switch (evt.keyCode) {
@@ -86,7 +114,7 @@
             }
             break;
           case 40:  /* Down arrow was pressed */
-            if (y + dy < HEIGHT){
+            if (y + dy < (HEIGHT - 60)){
               y += dy;
             }
             break;
@@ -96,19 +124,21 @@
             }
             break;
           case 39:  /* Right arrow was pressed */
-            if (x + dx < WIDTH){
+            if (x + dx < (WIDTH - 60)){
               x += dx;
             }
             break;
         }
       }
-      
-      window.addEventListener('keydown',doKeyDown,true);
+      window.onload = function() {
+        init();
+        window.addEventListener('keydown',doKeyDown,true);
+      };
     </script>
   </head>
   <body style="">
     <h1><marquee behavior='alternate'><blink>Super Fight Game!</blink></marquee></h1>
-    <canvas id="canvas" width="300" height="300"></canvas>
+    <canvas id="canvas" class="rounded_corners" width="600" height="400"></canvas>
     <audio controls="controls" autoplay="autoplay" loop="loop" style="margin: auto;display:block;">
       <source src="assets/8_bit_Boss_Battle_3.mp3" type="audio/mp3" />
       Your browser does not support the audio tag.
