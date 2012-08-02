@@ -16,5 +16,10 @@ FrameTimer.prototype = {
     var currentTick = (new Date()).getTime();
     this._frameSpacing = currentTick - this._lastTick;
     this._lastTick = currentTick;
+  },
+  
+  reset: function() {
+    this._frameSpacing = 0;
+    this._lastTick = 0;
   }
 };
