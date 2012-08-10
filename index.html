@@ -32,17 +32,31 @@
         width: 32,
         height: 32,
         sprites: [
+          // Right-facing
           { name: 'stand' },
-          { name: 'walk_1', x: 0, y: 1 },
-          { name: 'walk_2', x: 0, y: 1 },
-          { name: 'run', x: 0, y: 1 },
-          { name: 'jump', x: 0, y: 1 },
-          { name: 'punch_1', x: 0, y: 1 },
-          { name: 'punch_2', x: 0, y: 1 },
-          { name: 'punch_3', x: 0, y: 1 },
+          { name: 'walk_1', x: 0, y: 0 },
+          { name: 'walk_2', x: 0, y: 0 },
+          { name: 'run', x: 0, y: 0 },
+          { name: 'jump', x: 0, y: 0 },
+          { name: 'punch_1', x: 0, y: 0 },
+          { name: 'punch_2', x: 0, y: 0 },
+          { name: 'punch_3', x: 0, y: 0 },
           { name: 'hit_1', x: -256, y: 32 },
           { name: 'hit_2', x: -256, y: 32 },
-          { name: 'die', x: -256, y: 32 }
+          { name: 'die', x: -256, y: 32 },
+          
+          // Left-facing
+          { name: 'left_punch_3', x: -352, y: 64 },
+          { name: 'left_punch_2', x: -352, y: 64 },
+          { name: 'left_punch_1', x: -352, y: 64 },
+          { name: 'left_jump', x: -352, y: 64 },
+          { name: 'left_run', x: -352, y: 64 },
+          { name: 'left_walk_2', x: -352, y: 64 },
+          { name: 'left_walk_1', x: -352, y: 64 },
+          { name: 'left_stand', x: -352, y: 64 },
+          { name: 'left_hit_1', x: -768, y: 96 },
+          { name: 'left_hit_2', x: -768, y: 96 },
+          { name: 'left_die', x: -768, y: 96 }
         ]
       });
       
@@ -71,6 +85,21 @@
          { sprite: 'hit_2', time: 0.2 },
          { sprite: 'die', time: 1.0 }
        ], sprites);
+       
+       var leftDoItAll = new Animation([
+          { sprite: 'left_stand', time: 0.5 },
+          { sprite: 'left_walk_1', time: 0.5 },
+          { sprite: 'left_walk_2', time: 0.5 },
+          { sprite: 'left_run', time: 0.5 },
+          { sprite: 'left_jump', time: 0.5 },
+          { sprite: 'left_punch_1', time: 0.5 },
+          { sprite: 'left_punch_2', time: 0.5 },
+          { sprite: 'left_punch_3', time: 0.5 },
+          { sprite: 'left_hit_1', time: 0.5 },
+          { sprite: 'left_hit_2', time: 0.5 },
+          { sprite: 'left_die', time: 1.0 }
+        ], sprites);
+       
        
        var jump = new Animation([
          { sprite: 'stand', time: 0.2 },
@@ -106,7 +135,7 @@
         ctx              = canvas.getContext("2d");
         currentAnimation = stand;
         fighterImage     = new Image();
-        fighterImage.src = 'assets/fighter.gif';
+        fighterImage.src = 'assets/fighter_complete.gif';
         fighterImage.onload = function() {
           setInterval(function(){
             currentAnimation.animate(timer.getSeconds());
